@@ -1,3 +1,16 @@
+import asyncio
+import json
+import logging
+from typing import List
+
+import websockets
+
+logger = logging.getLogger("ParallelWSClient")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] <%(name)s:%(funcName)s:%(lineno)d> %(message)s",
+)
+
 class ParallelWSClient:
     def __init__(self, ws_host: str, ws_timeout: float, auth_token: str):
         self._ws_host = ws_host
