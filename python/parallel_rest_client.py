@@ -1,3 +1,10 @@
+import logging
+import uuid
+
+import requests
+
+logger = logging.getLogger("ParallelRESTClient")
+
 class ParallelRESTClient:
     def __init__(self, token: str, is_sandbox: bool = False):
         if is_sandbox:
