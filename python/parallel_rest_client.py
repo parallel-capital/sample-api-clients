@@ -1,3 +1,4 @@
+import json
 import logging
 import uuid
 
@@ -6,11 +7,8 @@ import requests
 logger = logging.getLogger("ParallelRESTClient")
 
 class ParallelRESTClient:
-    def __init__(self, token: str, is_sandbox: bool = False):
-        if is_sandbox:
-            self.url = "https://trade-sandbox.parallelcapital.co/api/v1"
-        else:  # Production!
-            self.url = "https://trade.parallelcapital.co/api/v1"
+    def __init__(self, token: str):
+        self.url = "https://trade.parallelcapital.co/api/v1"
         self.__headers = {
             "Content-Type": "application/json",
             "Authorization": f"Token {token}",
@@ -42,7 +40,7 @@ class ParallelRESTClient:
         symbol: str,
         quantity: float,
         price: float,
-        slippage_bps: float,
+        slippage_bps: float = 0,
         customer_order_id: str = str(uuid.uuid4()),
     ) -> dict:
         response = {}
@@ -57,7 +55,7 @@ class ParallelRESTClient:
             "order_type": "FOK",
         }
         try:
-            response = requests.post(request_url, data=request, headers=self.__headers)
+            response = requests.post(request_url, data=json.dumps(request), headers=self.__headers)
             response.raise_for_status()
         except Exception as err:
             logger.exception(err)
